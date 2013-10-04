@@ -44,11 +44,17 @@ module Fluent
       @running = true
       @thread = Thread.new do
         begin
-          while @running
+          count = 0
+          while sleep(1)
+            break unless @running
+
+            count += 1
+            next if count < @duration
+
             MemoryUsageProfiler.kick(@name) {|result|
               @out.call(result)
             }
-            sleep @duration
+            count = 0
           end
         rescue => e
           $log.error "Unexpected error in ruby_memory_usage_profiler", :error_class => e.class, :error => e
@@ -58,6 +64,7 @@ module Fluent
 
     def stop
       @running = false
+      @thread.join
     end
   end
 end
