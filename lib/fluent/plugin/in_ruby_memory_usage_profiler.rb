@@ -6,6 +6,8 @@ module Fluent
 
     config_param :duration, :integer, :default => 1
     config_param :name, :string, :default => 'fluentd_memory'
+    config_param :out_time, :bool, :default => true  # for 'file' only
+    config_param :time_format, :string, :default => '%Y-%m-%d %H:%M:%S %z'
 
     config_param :tag, :string, :default => 'memory_usage_profile'
     config_param :loglevel, :string, :default => 'info'
@@ -32,8 +34,15 @@ module Fluent
         @file = (@path == '-' ? STDOUT : open(@path, 'w+'))
         raise Fluent::ConfigError, "failed to open file '#{@path}' to write" unless @file
         @file.sync = true
-        @file.puts @banner.join("\t")
-        @out = lambda{|result| @file.puts result.join("\t")}
+        if @out_time
+          @file.puts (['time'] + @banner).join("\t")
+        else
+          @file.puts @banner.join("\t")
+        end
+        @out = lambda do |result|
+          header = @out_time ? [Time.now.strftime(@time_format)] : []
+          @file.puts (header + result).join("\t")
+        end
       else
         raise Fluent::ConfigError, "invalid output_type '#{@output_type}'"
       end
