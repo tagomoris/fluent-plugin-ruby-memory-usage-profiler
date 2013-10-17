@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-ruby-memory-usage-profiler"
-  spec.version       = "0.0.3"
+  spec.version       = "0.0.4"
   spec.authors       = ["TAGOMORI Satoshi"]
   spec.email         = ["tagomoris@gmail.com"]
   spec.description   = %q{Collect memory usage profile information and emit it (or output on fluentd log)}
@@ -19,5 +19,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
 
   spec.add_runtime_dependency "fluentd"
-  spec.add_runtime_dependency "ruby-memory-usage-profiler", ">= 0.0.2"
+  spec.add_runtime_dependency "ruby-memory-usage-profiler", ">= 0.0.3"
 end
