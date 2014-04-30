@@ -1,5 +1,7 @@
 # Fluent::Plugin::Ruby::Memory::Profiler
 
+**This plugin is already obsolete (especially for 2.1 or later).**
+
 TODO: Write a gem description
 
 ## Installation
